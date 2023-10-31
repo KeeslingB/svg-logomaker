@@ -1,8 +1,9 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const { Circle, Triangle, Square } = require('./lib/shapes.js');
+const { Circle, Triangle, Square , Shape} = require('./lib/shapes');
 
-// module.imports = {Triangle, Circle, Square};
+// import(Shape)
+
 
 inquirer.prompt([
   {
@@ -19,7 +20,7 @@ inquirer.prompt([
   {
     type: 'list',
     message: 'What shape would you like?',
-    name: 'shapes',
+    name: 'shape',
     choices: ['Circle', 'Triangle', 'Square']
   },
   {
@@ -34,30 +35,26 @@ createPage(response));
 
   
 function createPage(response) {
+  let shape;
+  if(response.shape === 'Circle'){
+    shape = new Circle();
+  } if (response.shape === "Triangle"){
+    shape = new Triangle();
+  } if (response.shape === "Square"){
+    shape = new Square();
+  }
+  // setColor(shape);
   svgfile = `<svg version="1.1"
   width="300" height="200"
   xmlns="http://www.w3.org/2000/svg">
 
-  
-  ${shapeChoice.response}
-  
-  <text x="150" y="125" font-size="60" text-anchor="middle" fill="${response.textcolor}">${response.text}</text>
+  ${shape}
+
+  <text x="150" y="125" font-size="60" text-anchor="middle" fill="${this.color}">${this.text}</text>
 
 </svg>`;
   fs.writeFile('logo.svg', svgfile, (err) =>
   err ? console.error(err) : console.log('Generated logo.svg'));
 }
-
-
-
-function shapeChoice (shapes) {
-  if (shapes === 'Triangle') {
-    return Triangle;
-  }
-  if (shapes === 'Square') {
-    return Square;
-  }
-  else {
-    return Circle;
-  }
-}
+  // ${shape.response}
+  // ${shape}
